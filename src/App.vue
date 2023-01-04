@@ -6,8 +6,8 @@
 
           <md-field>
             <md-input
-              :value="roomName"
-              @input="event => roomName = event.target.value"
+              :value="roomName"              
+              @input="event => roomNameInput(event)"
               class="room-name"
               placeholder="Enter your name"
             >
@@ -16,7 +16,7 @@
 
           <div class="prejoin-dropdown">
             <div class="join-meeting">
-              <div class="join-form">
+              <div class="join-form" @click="connect">
                 Join meeting
               </div>
               <div>
@@ -66,11 +66,11 @@
       </div>
       <div class="video-form">
         <img src="./assets/avatar.png" class="avatar">
-        <!-- <video v-for="track in videoTracks" :key="`track-${track.getId()}`" :ref="track.getId()" autoplay >
+        <video v-for="track in videoTracks" :key="`track-${track.getId()}`" :ref="track.getId()" autoplay >
         </video>
 
         <audio v-for="track in audioTracks" :key="`track-${track.getId()}`" :ref="track.getId()" autoplay >
-        </audio> -->
+        </audio>
       </div>
   </div>
 </template>
@@ -109,7 +109,7 @@ export default {
     },
 
     connect() {
-      console.log(this.roomName)
+      console.log(this.roomName, 'room name')
       connect(this.roomName).then(connection => {
         return createAndJoinRoom(connection, this.roomName);
       })
@@ -118,6 +118,10 @@ export default {
         createTracksAndAddToRoom(room);
       })
       .catch(error => console.error(error));
+    },
+
+    roomNameInput(event) {
+      this.roomName = event;
     }
   },
 }
